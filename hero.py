@@ -1,3 +1,5 @@
+from card import Card
+
 class Hero:
     def __init__(self):
         self.health = 100
@@ -11,7 +13,8 @@ class Hero:
         self.gold = 0
         self.upgrade_points = 0
         self.alive = True
-        self.hand = []
+        self.hand = [Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage")]
+        self.cards = [Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage")]
 
     # def level_up(self, upgrade):
     #     if upgrade == "health":
