@@ -5,12 +5,13 @@ class Round:
     def __init__(self, player,enemies, screen):
         pygame.init()
         default_font = pygame.font.get_default_font()
-        self.renderfont = pygame.font.Font(default_font, 30)
+        self.renderfont = pygame.font.Font(default_font, 20)
         self.enemies = enemies
         self.player = player
         self.screen = screen
 
     def start_round(self):
+        self.update_health_bars()
         while True:
             self.player_turn()
             self.update_health_bars()
@@ -45,22 +46,28 @@ class Round:
     def choose_card(self):
         #TODO: implement this
         # return information (name, damage, cost) about the card
-        self.update_hand_cards()
+        redraw = True
         while True:
+            if redraw:
+                self.update_hand_cards()
+                redraw = False
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
 
+                pos = pygame.mouse.get_pos()
+                for card in self.player.hero.hand:
+                    h = card.hoverd
+                    card.hoverd = card.rect.collidepoint(pos)
+                    if not card.hoverd == h:
+                        redraw = True
+
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.hand_cards_[0].collidepoint(pygame.mouse.get_pos()):
-                        return (self.player.hero.hand[0].get_name(), self.player.hero.hand[0].get_damage(), self.player.hero.hand[0].get_cost())
-                    # elif self.hand_cards_[1].collidepoint(pygame.mouse.get_pos()):
-                    #     return ("Sword", 10, 1)
-                    # elif self.hand_cards_[2].collidepoint(pygame.mouse.get_pos()):
-                    #     return ("Sword", 10, 1)
-                    # elif self.hand_cards_[3].collidepoint(pygame.mouse.get_pos()):
-                    #     return ("Sword", 10, 1)
+                    for card in self.player.hero.hand:
+                        if card.rect.collidepoint(pygame.mouse.get_pos()):
+                            return (card.get_name(), card.get_damage(), card.get_cost())
                     else:
                         print("Wrong card")
 
@@ -73,12 +80,18 @@ class Round:
         pygame.draw.rect(self.screen, (0,128,0), (50, 175 - 20,(50/self.player.hero.full_health)*self.player.hero.health, 10))
         pygame.display.update()
 
-    def update_hand_cards(self):  
-        self.hand_cards_ = []  
-        for card in self.player.hero.hand:
-            self.hand_cards_.append(pygame.Rect(150,480-125,100,120))
+    def update_hand_cards(self): 
+        pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(0,480-150,640,200))
+        for i,card in enumerate(self.player.hero.hand):  
+            if card.hoverd:
+                up = 10
+            else:
+                up =0
+            card.set_rect(pygame.Rect(125 + (100*i+i),480-125-up,100,120))
             #TODO images for cards
-            pygame.draw.rect(self.screen, (0,255,0), self.hand_cards_[-1])
-            label = self.renderfont.render(card.get_name(), True, (0,0,0))
-            self.screen.blit(label, (150,480-125))
+            pygame.draw.rect(self.screen, (0,255,0), card.get_rect())
+            label_name = self.renderfont.render(card.get_name(), True, (0,0,0))
+            self.screen.blit(label_name, (125+ (100*i+i),480-125-up))
+            label_damage = self.renderfont.render(str(card.get_damage()), True, (50,100,125))
+            self.screen.blit(label_damage, (125+ (100*i+i),480-125-up+30))
             pygame.display.update()

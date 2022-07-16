@@ -11,7 +11,7 @@ class Enemy:
         if damage > self.armor:
             self.health -= damage - self.armor
             self.armor = 0
-            if self.health < 0:
+            if self.health <= 0:
                 self.alive = False
         else:
             self.armor -= damage

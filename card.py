@@ -7,6 +7,8 @@ class Card:
         self.level = level
         self.cost = cost
         self.description = description
+        self.hoverd = False
+        self.rect = None
 
     def get_name(self):
         return self.name
@@ -22,3 +24,9 @@ class Card:
 
     def get_description(self):
         return self.description
+
+    def set_rect(self, rect):
+        self.rect = rect
+
+    def get_rect(self):
+        return self.rect

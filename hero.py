@@ -13,8 +13,8 @@ class Hero:
         self.gold = 0
         self.upgrade_points = 0
         self.alive = True
-        self.hand = [Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage")]
-        self.cards = [Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage")]
+        self.hand = [Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage"),Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage"),Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage"),Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage")]
+        self.cards = []
 
     # def level_up(self, upgrade):
     #     if upgrade == "health":
@@ -77,7 +77,7 @@ class Hero:
     def take_damage(self, damage):
         if damage > self.armor:
             self.health -= damage - self.armor
-            if self.health < 0:
+            if self.health <= 0:
                 self.alive = False
         else:
             self.armor -= damage
