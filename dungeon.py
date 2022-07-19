@@ -18,7 +18,7 @@ class Dungeon:
     def generate_enemies(self):
         #TODO: implement dificulty
         for _ in range(self.rounds):
-            self.enemies.append([Enemy(damage=20,health=random.randint(20,40),armor=random.randint(1,10))])
+            self.enemies.append([Enemy(damage=10,health=20,armor=5),Enemy(damage=10,health=20,armor=5)])
 
         print(self.enemies)
 

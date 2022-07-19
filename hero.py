@@ -1,4 +1,4 @@
-from card import Card
+from card import MeeleCard, RangeCard
 
 class Hero:
     def __init__(self):
@@ -13,7 +13,7 @@ class Hero:
         self.gold = 0
         self.upgrade_points = 0
         self.alive = True
-        self.hand = [Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage"),Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage"),Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage"),Card("Sword", 10, 1,0, "A sword that can be used to deal 10 damage")]
+        self.hand = [MeeleCard("Sword", 10, 1, 0, "A sword that can be used to attack"),MeeleCard("Knife", 8, 1, 0, "A knife that can be used to attack"),RangeCard("Bow", 10, 1, 0, "A bow that can be used to attack")]
         self.cards = []
 
     # def level_up(self, upgrade):
@@ -85,8 +85,8 @@ class Hero:
     def take_mana(self, mana):
         self.mana -= mana
 
-    def attack_enemy(self, enemy, damage):
-        enemy.take_damage(damage)
+    def attack_enemy(self, enemy, card):
+        enemy.take_damage(card.get_damage())
 
     def cast_spell(self, spell):
         pass

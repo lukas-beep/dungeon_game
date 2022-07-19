@@ -6,6 +6,7 @@ class Enemy:
         self.health = health
         self.armor = armor
         self.alive = True
+        self.rect = None
 
     def take_damage(self, damage):
         if damage > self.armor:
@@ -15,6 +16,12 @@ class Enemy:
                 self.alive = False
         else:
             self.armor -= damage
+
+    def get_rect(self):
+        return self.rect
+
+    def set_rect(self, rect):
+        self.rect = rect
 
     def get_damage(self):
         return self.damage
