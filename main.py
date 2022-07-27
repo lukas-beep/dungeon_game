@@ -16,8 +16,6 @@ player = Player("John",screen)
 
 screen.fill((128,64,0))
 pygame.draw.rect(screen, (255,0,0), pygame.Rect(0,480-150,640,200))
-pygame.draw.rect(screen, (0,0,0), pygame.Rect(50,175,50,100))
-pygame.draw.rect(screen, (0,0,0), pygame.Rect(640-200,175,50,100))
 
 
 player.play_dungeon()

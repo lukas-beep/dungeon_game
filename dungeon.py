@@ -1,4 +1,4 @@
-#TODO:this will manage random generated stats for enemies and rounds
+
 from round import Round
 from enemy import Enemy
 import random

@@ -1,4 +1,3 @@
-#TODO: card has name, powerup, level, cost, and description
 
 class Card:
     def __init__(self, name, powerup, level, cost, description):

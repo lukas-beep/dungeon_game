@@ -1,8 +1,6 @@
-#TODO: this will manage actual fight
 import pygame
 import random
 
-from sympy import false
 class Round:
     def __init__(self, player,enemies, screen):
         pygame.init()
@@ -21,8 +19,6 @@ class Round:
             self.update_health_bars()
             self.enemy_turn()
             self.update_health_bars()
-
-            print("Player health:", self.player.hero.health, "Enemy health:", self.enemies[-1].health)
 
             alive = self.check_alive()
             if alive[0] == False:
@@ -48,9 +44,10 @@ class Round:
             enemy.attack_hero(self.player.hero)
 
     def choose_card(self):
-        #TODO: implement this
+        self.update_screen()
+        pygame.image.save(self.screen,"screenshot.jpg")
         # return information ((name, damage, cost),enemy) about the card
-        redraw = True
+        redraw = False
         while True:
             if redraw:
                 self.update_screen()
@@ -65,7 +62,7 @@ class Round:
                 for card in self.player.hero.hand:
                     h = card.hoverd
                     card.hoverd = card.rect.collidepoint(pos)
-                    if not( card.hoverd == h) and not card.hoverd:
+                    if not( card.hoverd == h) and not card.hoverd and not card.draging:
                         redraw = True
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -93,7 +90,6 @@ class Round:
                                 if card == draging_card:
                                     if card.type == "Meele":
                                         if i == 0:
-                                            print("Meele")
                                             return (card, enemy) 
                                     elif card.type == "Range":
                                         return (card, enemy)
@@ -106,8 +102,7 @@ class Round:
                             card.rect.x = mouse_x + offset_x
                             card.rect.y = mouse_y + offset_y
 
-                            self.update_screen(cards=False)
-                            self.update_hand_card(card)
+                            self.update_draging_card(draging_card)
                             
             self.clock.tick(60)
 
@@ -144,7 +139,7 @@ class Round:
 
     def update_hand_card(self, card):
 
-        #TODO images for cards
+        #TODO image for card
         rect = card.get_rect()
         pygame.draw.rect(self.screen, (0,255,0), rect)
         label_name = self.renderfont.render(card.get_name(), True, (0,0,0))
@@ -152,11 +147,19 @@ class Round:
         label_damage = self.renderfont.render(str(card.get_powerup()), True, (50,100,125))
         self.screen.blit(label_damage, (rect.x + 10, rect.y + 10+30))
         pygame.display.update()
+
+    def update_draging_card(self, card):
+        rect = card.get_rect()
+        screenshot = pygame.image.load("screenshot.jpg").convert()
+        rect = screenshot.get_rect()
+        self.screen.blit(screenshot, rect)
+        self.update_hand_card(card)
         
     def update_enemies(self):
         self.set_rect_enemies()
         for enemy in self.enemies:
             pygame.draw.rect(self.screen, (255,140,25), enemy.get_rect())
+            #TODO damage label
             # label_damage = self.renderfont.render(str(enemy.get_damage()), True, (50,100,125))
             # self.screen.blit(label_damage, (enemy.get_rect().x,enemy.get_rect().y-30+30))
             pygame.display.update()
