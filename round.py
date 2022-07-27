@@ -4,8 +4,7 @@ import random
 class Round:
     def __init__(self, player,enemies, screen):
         pygame.init()
-        default_font = pygame.font.get_default_font()
-        self.renderfont = pygame.font.Font(default_font, 20)
+        self.renderfont = pygame.font.Font("8514oem.fon", 20)
         self.enemies = enemies
         self.player = player
         self.screen = screen
