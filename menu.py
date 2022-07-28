@@ -19,7 +19,6 @@ class Menu:
 
     def load_buttons(self):
         image = Image.open("buttons.png")
-        w, h = image.size
 
         for i in range(0, 128, 39):
             _buttons = image.crop((i, 0, i + 39, 31))
@@ -46,15 +45,20 @@ class Menu:
     def draw_buttons(self):
         for button in self.buttons:
             self.screen.blit(
-                button.imgs[0],
+                button.imgs[0 if not button.hover else 1],
                 (button.rect.x, button.rect.y),
             )
 
     def chosse_button(self):
         clock = pygame.time.Clock()
         pygame.display.update()
+        redraw = False
         while 1:
             clock.tick(60)
+            if redraw:
+                self.draw_buttons()
+                pygame.display.flip()
+                redraw = False
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -69,12 +73,12 @@ class Menu:
                                 button.func()
                                 return button
 
-                # for card in self.player.hero.hand:
-                #     h = card.hoverd
-                #     card.hoverd = card.rect.collidepoint(pos)
-                #     if not( card.hoverd == h) and not card.hoverd and not card.draging:
-                #         redraw = True
-
+                for button in self.buttons:
+                    h = button.hover
+                    button.hover = button.rect.collidepoint(pos)
+                    if not (button.hover == h):
+                        redraw = True
+                    
 
 class Button:
     def __init__(self, imgs, pos):
@@ -88,7 +92,7 @@ class StartButton(Button):
     def __init__(self, imgs, pos):
         super().__init__(imgs, pos)
 
-    def func(self, screen):
+    def func(self):
         pass  # TODO: start game
 
 
@@ -105,11 +109,8 @@ class MenuButton(Button):
     def __init__(self, imgs, pos):
         super().__init__(imgs, pos)
 
-    def func(self, screen):
+    def func(self):
         pass  # TODO: do menu
 
 
-# INFO: make a class for the buttons
-# FIXME: center the buttons
 # TODO: do hover func
-# TODO: can click on buttons

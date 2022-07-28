@@ -2,8 +2,6 @@ from player import Player
 import threading
 from menu import Menu
 
-
-
 import pygame
 pygame.init()
 
@@ -15,10 +13,6 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 m = Menu(screen)
 m.chosse_button()
 player = Player("John",screen,renderfont)
-# thread = threading.Thread(target=player.play_dungeon)
-# thread.start()
-
-
 
 screen.fill((128,64,0))
 pygame.draw.rect(screen, (255,0,0), pygame.Rect(0,480-150,640,200))
@@ -33,6 +27,6 @@ while True:
             pygame.quit()
             quit()
 
-    pygame.display.update()
+    pygame.display.flip()
     
     

@@ -66,7 +66,7 @@ class Round:
                 for card in self.player.hero.hand:
                     h = card.hoverd
                     card.hoverd = card.rect.collidepoint(pos)
-                    if not( card.hoverd == h) and not card.hoverd and not card.draging:
+                    if not( card.hoverd == h) and card.hoverd and not card.draging:
                         redraw = True
                         re_enemies = False
                         re_health = False
