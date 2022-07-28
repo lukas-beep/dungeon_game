@@ -21,7 +21,6 @@ class Round:
 
             alive = self.check_alive()
             if alive[0] == False:
-                print("You lost!")
                 return False
             elif alive[1] == False:
                 return True
@@ -47,10 +46,16 @@ class Round:
         pygame.image.save(self.screen,"screenshot.jpg")
         # return information ((name, damage, cost),enemy) about the card
         redraw = False
+        re_health = True
+        re_enemies = True
+        re_cards = True
         while True:
             if redraw:
-                self.update_screen()
+                self.update_screen(re_cards, re_enemies, re_health)
                 redraw = False
+                re_health = True
+                re_enemies = True
+                re_cards = True
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -63,6 +68,8 @@ class Round:
                     card.hoverd = card.rect.collidepoint(pos)
                     if not( card.hoverd == h) and not card.hoverd and not card.draging:
                         redraw = True
+                        re_enemies = False
+                        re_health = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     for card in self.player.hero.hand:
@@ -163,12 +170,13 @@ class Round:
             # self.screen.blit(label_damage, (enemy.get_rect().x,enemy.get_rect().y-30+30))
             pygame.display.update()
 
-    def update_screen(self, cards=True, enemies=True):
-        self.screen.fill((128,64,0))
-        pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(0,480-150,640,200))
-        pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(50,175,50,100)) #player
-        if enemies: self.update_enemies()
-        self.update_health_bars()
+    def update_screen(self, cards=True, enemies=True, health=True):
+        if enemies:
+            self.screen.fill((128,64,0))
+            pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(0,480-150,640,200))
+            pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(50,175,50,100)) #player
+            self.update_enemies()
+        if health: self.update_health_bars()
         if cards: self.update_hand_cards()
         pygame.display.update()
         

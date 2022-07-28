@@ -8,13 +8,13 @@ import pygame
 pygame.init()
 
 WIDTH, HEIGHT = 640, 480
-
+renderfont = pygame.font.Font("8514oem.fon", 20)
 pygame.display.set_caption("My Game")
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 m = Menu(screen)
 m.chosse_button()
-player = Player("John",screen)
+player = Player("John",screen,renderfont)
 # thread = threading.Thread(target=player.play_dungeon)
 # thread.start()
 

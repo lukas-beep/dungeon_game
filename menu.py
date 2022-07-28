@@ -7,8 +7,10 @@ class Menu:
         pygame.init()
         self.screen = screen
         self.WIDTH, self.HEIGHT = screen.get_size()
+        self.buttons = []
         self.load_buttons()
         self.draw_buttons()
+        
 
     def pilImageToSurface(self, pilImage):
         return pygame.image.fromstring(
@@ -19,29 +21,34 @@ class Menu:
         image = Image.open("buttons.png")
         w, h = image.size
 
-        start_buttons = image.crop((0, 0, 40, 31))
-        start_button = start_buttons.crop((0, 0, 40, 15))
-        start_button_hovered = start_buttons.crop((0, 15, 40, 31))
-        self.start_button = Button(
-            [
-                pygame.transform.scale2x(
+        for i in range(0, 128, 39):
+            _buttons = image.crop((i, 0, i + 39, 31))
+            button = _buttons.crop((0, 0, 40, 15))
+            button_hovered = _buttons.crop((0, 15, 40, 31))
+            button_info = (
+                [
                     pygame.transform.scale2x(
-                        self.pilImageToSurface(start_button_hovered)
-                    )
-                ),
-                pygame.transform.scale2x(
+                        pygame.transform.scale2x(self.pilImageToSurface(button_hovered))
+                    ),
                     pygame.transform.scale2x(
-                        self.pilImageToSurface(start_button)
-                    )
-                ),
-            ], (self.WIDTH // 2 - 20 * 2 * 2, (self.HEIGHT // 2 - 15 * 2 * 2) - 50)
-        )
+                        pygame.transform.scale2x(self.pilImageToSurface(button))
+                    ),
+                ],
+                (self.WIDTH // 2 - 20 * 2 * 2, (self.HEIGHT // 2 - 15 * 2 * 2) - 50+(i*1.7)),
+            )
+            if i == 0:
+                self.buttons.append(StartButton(*button_info))
+            elif i == 39 * 1:
+                self.buttons.append(MenuButton(*button_info))
+            elif i == 39 * 2:
+                self.buttons.append(QuitButton(*button_info))
 
     def draw_buttons(self):
-        self.screen.blit(
-            self.start_button.imgs[0],
-            (self.start_button.rect.x, self.start_button.rect.y),
-        )
+        for button in self.buttons:
+            self.screen.blit(
+                button.imgs[0],
+                (button.rect.x, button.rect.y),
+            )
 
     def chosse_button(self):
         clock = pygame.time.Clock()
@@ -56,12 +63,11 @@ class Menu:
 
                 pos = pygame.mouse.get_pos()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print("lol")
                     if event.button == 1:
-                        print("lllllll")
-                        if self.start_button.rect.collidepoint(pos):
-                            print("start")
-                            return self.start_button
+                        for button in self.buttons:
+                            if button.rect.collidepoint(pos):
+                                button.func()
+                                return button
 
                 # for card in self.player.hero.hand:
                 #     h = card.hoverd
@@ -79,11 +85,28 @@ class Button:
 
 
 class StartButton(Button):
-    def __init__(self, imgs):
-        super().__init__(imgs)
+    def __init__(self, imgs, pos):
+        super().__init__(imgs, pos)
 
     def func(self, screen):
         pass  # TODO: start game
+
+
+class QuitButton(Button):
+    def __init__(self, imgs, pos):
+        super().__init__(imgs, pos)
+
+    def func(self):
+        pygame.quit()
+        quit()
+
+
+class MenuButton(Button):
+    def __init__(self, imgs, pos):
+        super().__init__(imgs, pos)
+
+    def func(self, screen):
+        pass  # TODO: do menu
 
 
 # INFO: make a class for the buttons
