@@ -1,7 +1,7 @@
 
 from round import Round
 from enemy import Enemy
-import random
+from random import randint
 import pygame
 
 class Dungeon:
@@ -21,7 +21,7 @@ class Dungeon:
     def generate_enemies(self):
         #TODO: implement dificulty
         for _ in range(self.rounds):
-            self.enemies.append([Enemy(damage=10,health=20,armor=5),Enemy(damage=10,health=20,armor=5)])
+            self.enemies.append([Enemy(damage=randint(5,10),health=randint(15,30),armor=randint(1,5)),Enemy(damage=randint(5,10),health=randint(15,25),armor=randint(1,5))])
 
         print(self.enemies)
 
@@ -32,6 +32,7 @@ class Dungeon:
     def play_round(self):
         x,y = self.screen.get_size()
         while True:
+            self.player.hero.reset_health()
             self.set_round()
             end_round = self.round.start_round()
             if end_round == False:

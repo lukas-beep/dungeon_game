@@ -72,6 +72,7 @@ class Round:
                         re_health = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    draging_card = None
                     for card in self.player.hero.hand:
 
                         if event.button == 1:            
@@ -81,6 +82,7 @@ class Round:
                                 mouse_x, mouse_y = event.pos
                                 offset_x = card.rect.x - mouse_x
                                 offset_y = card.rect.y - mouse_y
+                            
 
                 elif event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1:      
@@ -108,7 +110,7 @@ class Round:
                             card.rect.x = mouse_x + offset_x
                             card.rect.y = mouse_y + offset_y
 
-                            self.update_draging_card(draging_card)
+                            self.update_draging_card(card)
                             
             self.clock.tick(60)
 

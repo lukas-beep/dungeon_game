@@ -38,6 +38,9 @@ class Hero:
     def get_health(self):
         return self.health
 
+    def reset_health(self):
+        self.health = self.full_health
+
     def get_full_health(self):
         return self.full_health
 

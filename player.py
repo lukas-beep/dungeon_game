@@ -9,5 +9,5 @@ class Player:
         self.renderfont = renderfont
 
     def play_dungeon(self):
-        dungeon = Dungeon("lol", self, 1, 1, self.screen, self.renderfont)
+        dungeon = Dungeon("lol", self, 5, 1, self.screen, self.renderfont)
         dungeon.play_round()
