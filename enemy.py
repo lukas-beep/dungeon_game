@@ -1,10 +1,11 @@
 class Enemy:
-    def __init__(self, name="Enemy", damage=0, health=0, armor=0):
+    def __init__(self, img,name="enemy" , damage=0, health=0, armor=0):
         self.name = name
         self.damage = damage
         self.full_health = health
         self.health = health
         self.armor = armor
+        self.img = img
         self.alive = True
         self.rect = None
 
@@ -19,6 +20,9 @@ class Enemy:
 
     def get_rect(self):
         return self.rect
+
+    def get_img(self):
+        return self.img
 
     def set_rect(self, rect):
         self.rect = rect

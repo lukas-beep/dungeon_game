@@ -1,4 +1,5 @@
 from card import MeeleCard, RangeCard
+import pygame
 
 class Hero:
     def __init__(self):
@@ -15,6 +16,8 @@ class Hero:
         self.alive = True
         self.hand = [MeeleCard("Sword", 10, 1, 0, "A sword that can be used to attack"),MeeleCard("Knife", 8, 1, 0, "A knife that can be used to attack"),RangeCard("Bow", 10, 1, 0, "A bow that can be used to attack"),RangeCard("Crossbow", 10, 1, 0, "A crossbow that can be used to attack")]
         self.cards = []
+        self.img = pygame.transform.scale(pygame.image.load("assets\\skeletons\\SkeletonGuard.png").convert_alpha(),(100,100))
+        self.rect = None
 
     # def level_up(self, upgrade):
     #     if upgrade == "health":
@@ -28,6 +31,15 @@ class Hero:
     #         self.luck += 1
         
     #     self.upgrade_points -= 1
+
+    def set_rect(self, rect):
+        self.rect = rect
+
+    def get_rect(self):
+        return self.rect
+
+    def get_img(self):
+        return self.img
 
     def get_upgrade_points(self):
         return self.upgrade_points

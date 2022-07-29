@@ -2,15 +2,19 @@ import pygame
 import random
 
 class Round:
-    def __init__(self, player,enemies, screen):
+    def __init__(self, player,enemies, screen, cave_image, round_number, max_rounds):
         pygame.init()
         self.renderfont = pygame.font.Font("8514oem.fon", 20)
         self.enemies = enemies
         self.player = player
         self.screen = screen
+        self.cave_image = cave_image
+        self.round_number = round_number
+        self.max_rounds = max_rounds
         self.clock = pygame.time.Clock()
 
     def start_round(self):
+        self.player.hero.set_rect(pygame.Rect(50,175,50,100))
         self.set_rect_enemies()
         self.update_health_bars()
         while True:
@@ -139,7 +143,7 @@ class Round:
             if card.draging:
                 card_not_set = card
         self.set_default_rect_cards(card_not_set)
-        pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(0,480-150,640,200))
+        pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(0,480-170,640,200))
         for card in self.player.hero.hand:  
             if card.hoverd: card.rect.y -= 10
             #TODO images for cards
@@ -166,17 +170,26 @@ class Round:
     def update_enemies(self):
         self.set_rect_enemies()
         for enemy in self.enemies:
-            pygame.draw.rect(self.screen, (255,140,25), enemy.get_rect())
+            enemy_rect = enemy.get_rect()
+            # pygame.draw.rect(self.screen, (255,140,25), enemy_rect)
+            self.screen.blit(enemy.get_img(), (enemy_rect.x-15, enemy_rect.y, enemy_rect.width, enemy_rect.height))
             #TODO damage label
             # label_damage = self.renderfont.render(str(enemy.get_damage()), True, (50,100,125))
             # self.screen.blit(label_damage, (enemy.get_rect().x,enemy.get_rect().y-30+30))
-            pygame.display.update()
+            pygame.display.flip()
+
+    def update_hero(self):
+        player_rect = self.player.hero.get_rect()
+        self.screen.blit(self.player.hero.get_img(), (player_rect.x-15, player_rect.y, player_rect.width, player_rect.height))
+        pygame.display.flip()
 
     def update_screen(self, cards=True, enemies=True, health=True):
+        label = self.renderfont.render(f"Round {self.round_number} of {self.max_rounds}", True, (0,0,0))
+        self.screen.blit(label, (self.screen.get_width()//2-12, 30))
         if enemies:
-            self.screen.fill((128,64,0))
-            pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(0,480-150,640,200))
-            pygame.draw.rect(self.screen, (0,0,0), pygame.Rect(50,175,50,100)) #player
+            self.screen.fill((0,0,0))
+            self.screen.blit(self.cave_image, (0,-170))
+            self.update_hero()
             self.update_enemies()
         if health: self.update_health_bars()
         if cards: self.update_hand_cards()

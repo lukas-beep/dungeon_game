@@ -12,21 +12,23 @@ class Dungeon:
         self.rounds = rounds
         self.player = player
         self.difficulty = difficulty
-        self.round_number = 0
+        self.round_number = 1
         self.round = None
         self.screen = screen
         self.renderfont = renderfont
+        self.cave_image = pygame.transform.scale(pygame.image.load("assets\\caves\\cave1.png").convert(), self.screen.get_size()) #TODO: change on dificulty 1-4
         self.generate_enemies()
 
     def generate_enemies(self):
         #TODO: implement dificulty
         for _ in range(self.rounds):
-            self.enemies.append([Enemy(damage=randint(5,10),health=randint(15,30),armor=randint(1,5)),Enemy(damage=randint(5,10),health=randint(15,25),armor=randint(1,5))])
+            img = pygame.transform.flip(pygame.transform.scale(pygame.image.load("assets\\skeletons\\Skeleton.png").convert_alpha(), (100,100)), True, False)
+            self.enemies.append([Enemy(img,damage=randint(5,10),health=randint(15,30),armor=randint(1,5)),Enemy(img,damage=randint(5,10),health=randint(15,25),armor=randint(1,5))])
 
         print(self.enemies)
 
     def set_round(self):
-        self.round = Round(self.player, self.enemies[self.round_number], self.screen)
+        self.round = Round(self.player, self.enemies[self.round_number], self.screen, self.cave_image, self.round_number, self.rounds)
         self.round_number += 1
 
     def play_round(self):
